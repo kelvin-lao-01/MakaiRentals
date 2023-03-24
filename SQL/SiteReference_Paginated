@@ -1,0 +1,60 @@
+USE [Makai]
+GO
+/****** Object:  StoredProcedure [dbo].[SiteReference_SelectAll_Paginated]    Script Date: 3/23/2023 10:48:27 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Lao, Kelvin
+-- Create date: 23FEB25
+-- Description:	SelectAll Paginated from dbo.SiteReferences
+--				
+-- Code Reviewer: Hector Avila
+
+-- MODIFIED BY: author
+-- MODIFIED DATE:12/1/2020
+-- Code Reviewer:
+-- Note:
+-- =============================================
+
+ALTER proc [dbo].[SiteReference_SelectAll_Paginated]
+							@PageIndex int
+							,@PageSize int
+
+
+/*
+			DECLARE
+					@PageIndex int = '0'
+					,@PageSize int = '5'
+
+			Execute dbo.SiteReference_SelectAll_Paginated
+					@PageIndex 
+					,@PageSize 
+					
+			
+*/
+
+as
+
+
+BEGIN
+
+Declare @Offset int = @PageIndex * @PageSize
+
+SELECT
+		sf.[ReferenceTypeId]
+		,rt.[Name]
+		,[UserId]
+		,TotalCount = COUNT(1) OVER()
+		
+
+FROM dbo.SiteReferences as sf join [dbo].ReferenceTypes as rt on sf.ReferenceTypeId = rt.Id
+Order by Id
+
+Offset @offset Rows
+Fetch next @PageSize Rows Only
+
+
+END
