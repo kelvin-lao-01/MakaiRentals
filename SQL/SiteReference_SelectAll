@@ -1,0 +1,28 @@
+USE [Makai]
+GO
+/****** Object:  StoredProcedure [dbo].[SiteReference_SelectAll]    Script Date: 3/23/2023 10:47:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+ALTER PROC [dbo].[SiteReference_SelectAll]
+
+
+AS
+/*
+
+EXECUTE dbo.SiteReference_SelectAll
+
+*/
+
+BEGIN
+				Select r.Name
+						,TotalCount =COUNT(*)
+				FROM dbo.SiteReferences as s join [dbo].ReferenceTypes as r 
+					on s.ReferenceTypeId = r.Id
+					GROUP BY r.Name
+END
