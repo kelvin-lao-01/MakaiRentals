@@ -1,0 +1,58 @@
+USE [Makai]
+GO
+/****** Object:  StoredProcedure [dbo].[SiteReference_Insert]    Script Date: 3/23/2023 10:47:38 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Lao, Kelvin
+-- Create date: 23FEB25
+-- Description:	Insert into dbo.SiteReferences
+--				
+-- Code Reviewer: Hector Avila
+
+-- MODIFIED BY: author
+-- MODIFIED DATE:12/1/2020
+-- Code Reviewer:
+-- Note:
+-- =============================================
+
+ALTER proc [dbo].[SiteReference_Insert]
+					@SiteReferenceId int
+					,@UserId int
+					,@Id int output
+
+/*
+
+Declare
+	@ReferenceTypeId int = '',
+	,@UserId int = ''
+
+
+Execute dbo.Site_Reference_Insert
+
+			@ReferenceTypeId
+			,@UserId
+
+			Select *
+from dbo.SiteReferences
+*/
+
+as
+
+
+BEGIN
+
+
+INSERT into dbo.SiteReferences
+			([ReferenceTypeId]
+			,[UserId])
+
+		Values (@SiteReferenceId
+				,@UserId)
+
+SET @Id = SCOPE_IDENTITY()
+
+END
