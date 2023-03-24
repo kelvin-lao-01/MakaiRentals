@@ -1,1 +1,1 @@
-# MakaiRentals
+Makai Rentals is a business allowing users to rent water sport equipments through their mobile phones. Makai Rentals is an MPV and due to the proprietory nature of the code I can only provide code snippets of my code. This repository contains SQL, .NET, and REACT codes that I have worked on.
