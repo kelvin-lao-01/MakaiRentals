@@ -1,0 +1,69 @@
+USE [Makai]
+GO
+/****** Object:  StoredProcedure [dbo].[UsersAdmin_SearchPaginate]    Script Date: 3/23/2023 5:25:52 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Lao, Kelvin
+-- Create date: 3/6/2023
+-- Description:	Search Paginate for Users Admin
+-- Reviewer:
+-- =============================================
+
+ALTER proc [dbo].[UsersAdmin_SearchPaginate]
+				@PageIndex int
+				,@PageSize int
+				,@Query nvarchar(100)
+/*
+
+				Declare
+				@PageIndex int = 0
+				,@PageSize int = 5
+				,@Query nvarchar(100) = 'Ventura'
+
+execute dbo.UsersAdmin_SearchPaginate
+
+				@PageIndex
+				,@PageSize
+				,@Query
+
+
+*/
+
+as
+begin
+Declare @offset int = @PageIndex * @PageSize
+
+SELECT		 u.Id
+			,u.Email
+			,u.Phone
+			,u.FirstName
+			,u.LastName
+			,u.Mi 
+			,u.AvatarUrl
+			,u.DOB
+			,Roles = ( SELECT	 r.Id
+								,r.Name
+						
+						FROM	dbo.Roles as r inner join dbo.UserRoles as ur
+										on r.Id = ur.RoleId 
+						WHERE	u.Id = ur.UserId
+						FOR		JSON AUTO )	
+			,st.Id as StatusTypeId
+			,st.Name as StatusTypeName
+			,TotalCount = COUNT(1) OVER()
+
+		FROM	dbo.Users as u inner join dbo.StatusTypes as st
+						on u.StatusId = st.Id
+				inner join dbo.UserRoles as ur on ur.UserId = u.Id
+				inner join dbo.roles as r on r.Id = ur.RoleId
+
+		WHERE (r.Id = 1 OR r.Id = 2 Or r.Id = 3) AND ((u.FirstName LIKE '%' + @Query + '%') OR (u.LastName LIKE '%' + @Query + '%'))
+        ORDER BY u.Id
+		OFFSET @Offset ROWS
+		FETCH NEXT @PageSize ROWS ONLY
+
+END
